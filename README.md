@@ -1,8 +1,12 @@
-# Android GUI for [WireGuard](https://www.wireguard.com/)
+# Android GUI for [wireguard-o](https://github.com/lry127/wireguard-o)
 
-**[Download from the Play Store](https://play.google.com/store/apps/details?id=com.wireguard.android)**
+## 介绍
 
-This is an Android GUI for [WireGuard](https://www.wireguard.com/). It [opportunistically uses the kernel implementation](https://git.zx2c4.com/android_kernel_wireguard/about/), and falls back to using the non-root [userspace implementation](https://git.zx2c4.com/wireguard-go/about/).
+本项目为wireguard魔改版，通过对所有数据包执行xor计算以去除wireguard包特征，避免被GFW封锁。本repo运行在Android端。[服务器端repo](https://github.com/lry127/wireguard-o).
+
+> [!WARNING]  
+> [Release](https://github.com/lry127/wireguard-android-o/releases/tag/v1.0)中提供的APK仅支持xor密钥为`your_secret_key_or_password`的服务器。如需变更，需修改 `tunnel/src/main/java/com/wireguard/android/backend/SimpleUdpForwarder.java` 并重新编译APK.
+
 
 ## Building
 
