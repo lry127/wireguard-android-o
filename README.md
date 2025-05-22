@@ -11,7 +11,7 @@
 ## Building
 
 ```
-$ git clone --recurse-submodules https://git.zx2c4.com/wireguard-android
+$ git clone --recurse-submodules https://github.com/lry127/wireguard-android-o.git
 $ cd wireguard-android
 $ ./gradlew assembleRelease
 ```
