@@ -12,7 +12,7 @@
 
 ```
 $ git clone --recurse-submodules https://github.com/lry127/wireguard-android-o.git
-$ cd wireguard-android
+$ cd wireguard-android-o
 $ ./gradlew assembleRelease
 ```
 
