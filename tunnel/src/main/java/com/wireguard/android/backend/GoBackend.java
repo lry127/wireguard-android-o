@@ -51,6 +51,8 @@ public final class GoBackend implements Backend {
     @Nullable private Tunnel currentTunnel;
     private int currentTunnelHandle = -1;
 
+    private SimpleUdpForwarder forwarder;
+
     /**
      * Public constructor for GoBackend.
      *
@@ -274,8 +276,15 @@ public final class GoBackend implements Backend {
                 break;
             }
 
+            Peer firstPeer = config.getPeers().getFirst();
+            InetEndpoint endpoint = firstPeer.getEndpoint().orElseThrow();
+            forwarder = new SimpleUdpForwarder(endpoint.getHost(), endpoint.getPort());
+            forwarder.start(service);
+            String oldEndpointText = "endpoint=" + endpoint.getHost() + ':' + endpoint.getPort();
+            String newEndpointText = "endpoint=127.0.0.1:" + forwarder.getLocalListeningPort();
+
             // Build config
-            final String goConfig = config.toWgUserspaceString();
+            String goConfig = config.toWgUserspaceString().replace(oldEndpointText, newEndpointText);
 
             // Create the vpn tunnel with android API
             final VpnService.Builder builder = service.getBuilder();
@@ -334,6 +343,7 @@ public final class GoBackend implements Backend {
             service.protect(wgGetSocketV4(currentTunnelHandle));
             service.protect(wgGetSocketV6(currentTunnelHandle));
         } else {
+            forwarder.stop();
             if (currentTunnelHandle == -1) {
                 Log.w(TAG, "Tunnel already down");
                 return;
